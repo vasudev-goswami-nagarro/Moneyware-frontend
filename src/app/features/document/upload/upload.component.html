@@ -1,0 +1,47 @@
+<div class="align-items-center h-50">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-5">
+        <mat-card>
+          <h3 class="text-center">Upload Document</h3>
+
+          <div class="alert alert-danger" role="alert" *ngIf="submitted && files.length === 0">
+            File is required
+          </div>
+
+          <div class="alert alert-danger" role="alert" *ngIf="uploadError">
+            Failed Uploading file:
+            <span *ngIf="errorStatus === 401; else otherMessage"> Unauthorised</span>
+            <ng-template #otherMessage>{{errorMessage}}</ng-template>
+          </div>
+
+          <input type="file" (change)="onChange($event)"/>
+
+          <form [formGroup]="documentUploadForm" (ngSubmit)="onSubmit()">
+
+            <mat-form-field class="w-100">
+              <input type="text" matInput placeholder="Document Type" formControlName="documentType">
+              <mat-error *ngIf="data.documentType.errors?.required">Document type is required</mat-error>
+            </mat-form-field>
+            <div class="form-group mt-4">
+              <button mat-raised-button color="primary">Upload</button>
+            </div>
+          </form>
+
+          <div class="container">
+            <ng-container *ngIf="uploadSuccess">
+              Upload Successful
+            </ng-container>
+            <mat-progress-bar mode="determinate" value="{{percentDone}}"
+                              class="progressbar"></mat-progress-bar>
+            <span>
+              <mat-icon class="upload-confirmation" aria-hidden="true" *ngIf="uploadSuccess">check_circle</mat-icon>
+          </span>
+            <span class="cdk-visually-hidden" *ngIf="uploadSuccess">upload complete</span>
+          </div>
+
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
